@@ -70,4 +70,17 @@ def create_app(): #config을 넣을 수 있다.
     @app.teardown_appcontext
     def teardown_appcontext(exception):
         app.logger.info("teardown_appcontext")
+
+    """Method와 request-context"""
+    from flask import request
+    @app.route("/test/method/<id>", methods=["GET","POST"])
+    def method_test(id):
+        return jsonify({
+            "request-method": request.method,
+            "path-args": id, # 패스 파라미터로 들어오는
+            "request-args": request.args, #쿼리 파라미터로 들어오는 값
+            "request-form": request.form, #form데이터로 들어오는 값
+            # "request-json": request.json #post의 body로 들어오는 값값
+        })
+
     return app
