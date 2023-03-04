@@ -15,4 +15,30 @@ def create_app(): #config을 넣을 수 있다.
     def index():
         return "hello world"
 
+    """Routing"""
+    from flask import jsonify, redirect, url_for
+    @app.route("/test/name/<name>")
+    def name(name):
+        return f"Name is {name}"
+
+    @app.route("/test/id/<int:id>")
+    def id(id):
+        return f"id is {id}"
+
+    @app.route("/test/path/<path:subpath>")
+    def path(subpath):
+        return subpath
+
+    @app.route("/test/json")
+    def json():
+        return jsonify({"hello":"world"})
+
+    @app.route("/test/redirect/<path:subpath>")
+    def redirct_url(subpath):
+        return redirect(subpath)
+
+    @app.route("/test/url-for/<path:subpath>")
+    def urlfor(subpath):
+        return redirect(url_for("path", subpath=subpath))
+
     return app
