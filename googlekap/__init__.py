@@ -12,6 +12,9 @@ def create_app():  # config을 넣을 수 있다.
 
     app = Flask(__name__)
 
+    if app.config["DEBUG"]:
+        app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 1
+
     @app.route("/")
     def index():
         app.logger.info("=====index=====")
