@@ -45,6 +45,11 @@ def create_app():  # config을 넣을 수 있다.
     app.register_blueprint(base_route.bp)
     app.register_blueprint(auth_route.bp)
 
+    """Restx INIT"""
+    from googlekap.apis import blueprint as api
+    app.register_blueprint(api)
+
+
     """REQUEST HOOK"""
     @app.before_request
     def before_request():
