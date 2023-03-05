@@ -14,7 +14,7 @@ def create_app():  # config을 넣을 수 있다.
     app = Flask(__name__)
 
     app.config["SECRET_KEY"]="secretkey"
-
+    app.config["SESSION_COOKIE_NAME"] = "googlekap_session"
     if app.config["DEBUG"]:
         app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 1
 
