@@ -1,6 +1,6 @@
 # 디렉토리 안에 __init__.py가 있으면 해당 디렉토리는 파이썬 모듈화 된다.
 
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -44,6 +44,16 @@ def create_app():  # config을 넣을 수 있다.
     from googlekap.routes import base_route, auth_route
     app.register_blueprint(base_route.bp)
     app.register_blueprint(auth_route.bp)
+
+    """REQUEST HOOK"""
+    @app.before_request
+    def before_request():
+        g.db = db.session
+
+    @app.teardown_request
+    def teardown_request(exception):
+        if hasattr(g, "db"):
+            g.db.close()
 
     @app.errorhandler(404)
     def page_404(error):
