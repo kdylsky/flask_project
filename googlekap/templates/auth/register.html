@@ -1,4 +1,5 @@
-<form method="post" action="{{ url_for('register') }}">
+<!--router에서 namespace를 이용했기 때문에 아래와 같이 register=> auth.register로 변경해주어야 한다.-->
+<form method="post" action="{{ url_for('auth.register') }}">
     {{ form.csrf_token }}
     {{ form.user_id.label }} {{ form.user_id(minlength=4, maxlength=20) }}
     {{ form.user_name.label }} {{ form.user_name(minlength=4, maxlength=20) }}
