@@ -451,4 +451,6 @@ $RECYCLE.BIN/
 *.db
 
 .idea
+
+migrations
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,visualstudiocode,windows,macos,flask
