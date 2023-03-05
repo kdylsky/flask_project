@@ -21,44 +21,10 @@ def create_app():  # config을 넣을 수 있다.
     """CSRF INIT"""
     csrf.init_app(app)
 
-    @app.route("/")
-    def index():
-        app.logger.info("=====index=====")
-        return render_template("index.html")
-
-    from googlekap.forms.auth_form import LoginFrom, RegisterFrom
-    @app.route("/auth/login", methods=["GET", "POST"])
-    def login():
-        form = LoginFrom()
-        if form.validate_on_submit():
-            user_id = form.data.get("user_id")
-            password = form.data.get("password")
-            print(user_id, password)
-        else:
-            #error
-            pass
-        return render_template("login.html", form=form)
-
-    @app.route("/auth/register", methods=["GET", "POST"])
-    def register():
-        form = RegisterFrom()
-
-        # form에는 method가 post인지 확인 할 수 있는 메서드가 존재한다.
-        # 유효성이 통과 됐는지도 확인 할 수 있다.
-        if form.validate_on_submit():
-            user_id = form.data.get("user_id")
-            user_name = form.data.get("user_name")
-            password = form.data.get("password")
-            repassword = form.data.get("repassword")
-            print(user_id, user_name, password, repassword)
-        else:
-            #error
-            pass
-        return render_template("register.html", form=form)
-
-    @app.route("/auth/logout")
-    def logout():
-        return "logout"
+    """Routes INIT"""
+    from googlekap.routes import base_route, auth_route
+    app.register_blueprint(base_route.bp)
+    app.register_blueprint(auth_route.bp)
 
     @app.errorhandler(404)
     def page_404(error):
