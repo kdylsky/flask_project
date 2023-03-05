@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, session, request
 from googlekap.forms.auth_form import LoginFrom, RegisterFrom
+from werkzeug import security
 
 NAME = "auth"
 bp = Blueprint(NAME, __name__, url_prefix="/auth")
@@ -15,9 +16,9 @@ class User:
     user_name: str
     password: str
 
-user_list.append(User("tester1_id", "tester1_name", "tester1_password"))
-user_list.append(User("tester2_id", "tester2_name", "tester2_password"))
-user_list.append(User("tester3_id", "tester3_name", "tester3_password"))
+user_list.append(User("tester1_id", "tester1_name", security.generate_password_hash("1234")))
+user_list.append(User("tester2_id", "tester2_name", security.generate_password_hash("1234")))
+user_list.append(User("tester3_id", "tester3_name", security.generate_password_hash("1234")))
 
 @bp.route("/", methods=["GET"])
 def index():
@@ -33,7 +34,7 @@ def login():
         user = [user for user in user_list if user.user_id == user_id]
         if user:
             user = user[0]
-            if user.password != password:
+            if not security.check_password_hash(user.password, password):
                 flash("패스워드가 틀립니다.")
             else:
                 session["user_id"] = user_id
@@ -64,7 +65,7 @@ def register():
                 User(
                     user_id = user_id,
                     user_name = user_name,
-                    password = password
+                    password = security.generate_password_hash(password)
                 )
             )
             session["user_id"] = user_id
