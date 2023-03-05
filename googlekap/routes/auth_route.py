@@ -1,25 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, session, request
 from googlekap.forms.auth_form import LoginFrom, RegisterFrom
+from googlekap import db
 from googlekap.models.user import User as UserModel
 from werkzeug import security
 
 NAME = "auth"
 bp = Blueprint(NAME, __name__, url_prefix="/auth")
-
-# 메모리에 유저데이터 테스트
-"""testing"""
-from dataclasses import dataclass
-user_list = []
-
-@dataclass
-class User:
-    user_id: str
-    user_name: str
-    password: str
-
-user_list.append(User("tester1_id", "tester1_name", security.generate_password_hash("1234")))
-user_list.append(User("tester2_id", "tester2_name", security.generate_password_hash("1234")))
-user_list.append(User("tester3_id", "tester3_name", security.generate_password_hash("1234")))
 
 @bp.route("/", methods=["GET"])
 def index():
@@ -32,13 +18,12 @@ def login():
     if form.validate_on_submit():
         user_id = form.data.get("user_id")
         password = form.data.get("password")
-        user = [user for user in user_list if user.user_id == user_id]
+        user = UserModel.find_one_by_user_id(user_id)
         if user:
-            user = user[0]
             if not security.check_password_hash(user.password, password):
                 flash("패스워드가 틀립니다.")
             else:
-                session["user_id"] = user_id
+                session["user_id"] = user.user_id
                 return redirect(url_for("base.index"))
         else:
             flash("유저가 존재하지 않습니다.")
@@ -56,19 +41,19 @@ def register():
         user_id = form.data.get("user_id")
         user_name = form.data.get("user_name")
         password = form.data.get("password")
-        user = [user for user in user_list if user.user_id == user_id]
+        user = UserModel.find_one_by_user_id(user_id)
         if user:
             flash("이미 존재하는 유저입니다.")
             # 기존의 페이지로 이동한다.
             return redirect(request.path)
         else:
-            user_list.append(
-                User(
-                    user_id = user_id,
-                    user_name = user_name,
-                    password = security.generate_password_hash(password)
-                )
+            user = UserModel(
+                user_id=user_id,
+                user_name=user_name,
+                password=security.generate_password_hash(password)
             )
+            db.session.add(user)
+            db.session.commit()
             session["user_id"] = user_id
             return redirect(url_for("base.index"))
     else:
