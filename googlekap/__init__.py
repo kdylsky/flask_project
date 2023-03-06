@@ -13,6 +13,8 @@ migrate = Migrate()
 # __init__.py에 여러개의 의존성패키지를 초기화하고 접근할 때, 순환참조 장애가 발생할 수 있다.
 # 그래서 create_app안에 import구문을 넣어서 runtime시에 작동할 수 있도록 한다.
 # config를 받아서 환경 별로 실행할 수 있다.
+
+
 def create_app(config=None):  # config을 넣을 수 있다.
     print("run: create_app()")
 
@@ -20,6 +22,7 @@ def create_app(config=None):  # config을 넣을 수 있다.
 
     """Flask Configs"""
     from .configs import DevelopmentConfig, ProductionConfig
+
     if not config:
         if app.config["DEBUG"]:
             config = DevelopmentConfig()
@@ -39,15 +42,17 @@ def create_app(config=None):  # config을 넣을 수 있다.
 
     """Routes INIT"""
     from googlekap.routes import base_route, auth_route
+
     app.register_blueprint(base_route.bp)
     app.register_blueprint(auth_route.bp)
 
     """Restx INIT"""
     from googlekap.apis import blueprint as api
+
     app.register_blueprint(api)
 
-
     """REQUEST HOOK"""
+
     @app.before_request
     def before_request():
         g.db = db.session
