@@ -81,3 +81,8 @@ flask-migrate flask-sqlalchemy
 - flask db init
 - flask db migrate -m ""
 - flask db upgrade
+
+
+테스트에서 세션관리
+- 테스트에서 세션을 관리하기 때문에 fixture에는 스코프라는 것이 있다.
+- scope='session' 추가

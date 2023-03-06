@@ -27,6 +27,7 @@ post_parser.add_argument("password", required=True, help="유저 비밀번호")
 # /api/users
 @ns.route("")
 @ns.response(409, "already exist  ")
+@ns.deprecated
 class UserList(Resource):
     @ns.marshal_list_with(user, skip_none=True)
     def get(self):
@@ -56,6 +57,7 @@ class UserList(Resource):
 # /api/users/id
 @ns.route("/<int:id>")
 @ns.param("id", "유저 고유번호")
+@ns.deprecated
 class User(Resource):
     @ns.marshal_list_with(user, skip_none=True)
     def get(self, id):
