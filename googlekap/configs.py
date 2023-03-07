@@ -13,7 +13,9 @@ class Config:
         "mysql+mysqldb://root:password@0.0.0.0:3308/googlekap?charset=utf8"
     )
     # 로컬 mysql에 연결하기
-    # SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:password@localhost:3306/googlekap?charset=utf8"
+    # SQLALCHEMY_DATABASE_URI = (
+    #     "mysql+pymysql://root:password@localhost:3306/googlekap?charset=utf8"
+    # )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SWAGGER_UI_DOC_EXPANSION = "list"
 
