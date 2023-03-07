@@ -18,6 +18,7 @@ class Config:
     # )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SWAGGER_UI_DOC_EXPANSION = "list"
+    USER_STATIC_BASE_DIR = "user_images"
 
 
 class DevelopmentConfig(Config):
@@ -34,5 +35,5 @@ class TestingConfig(DevelopmentConfig):
     SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(BASE_PATH, 'sqlite_test.db')}"
 
 
-class ProductionConfig(DevelopmentConfig):
+class ProductionConfig(Config):
     pass

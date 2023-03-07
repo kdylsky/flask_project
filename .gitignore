@@ -453,4 +453,6 @@ $RECYCLE.BIN/
 .idea
 
 migrations
+
+googlekap/static/user_images
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,visualstudiocode,windows,macos,flask
